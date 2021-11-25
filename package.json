@@ -1,5 +1,5 @@
 {
-  "name": "next-ts-boilerplate",
+  "name": "headless-wp-nextjs",
   "private": true,
   "scripts": {
     "dev": "next dev",
