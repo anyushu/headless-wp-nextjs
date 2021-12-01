@@ -1,8 +1,12 @@
-import { gql } from '@apollo/client'
-import client from './apollo-client'
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
+
+const client = new ApolloClient({
+  uri: process.env.WORDPRESS_API_URL || '',
+  cache: new InMemoryCache(),
+})
 
 /**
- * get wp categories
+ * get categories
  */
 export function getCategories() {
   return client.query({
@@ -21,12 +25,15 @@ export function getCategories() {
 }
 
 /**
- * get wp category
+ * get category by categoryId
  */
-export function getCategory() {
+export function getCategory(categoryId: number) {
   return client.query({
+    variables: {
+      categoryId: categoryId,
+    },
     query: gql`
-      query getCategory($id: ID = "") {
+      query getCategory($id: ID!) {
         category(id: $id) {
           categoryId
           name
@@ -38,13 +45,16 @@ export function getCategory() {
 }
 
 /**
- * get wp posts
+ * get posts by category
  */
-export function getPosts() {
+export function getPosts(categoryId?: number) {
   return client.query({
+    variables: {
+      categoryId: categoryId,
+    },
     query: gql`
-      query getPosts {
-        posts {
+      query getPosts($categoryId: Int = null) {
+        posts(where: { categoryId: $categoryId }) {
           nodes {
             postId
             slug
@@ -63,15 +73,21 @@ export function getPosts() {
 }
 
 /**
- * get wp post
+ * get post by DATABASE_ID
  */
-export function getPost() {
+export function getPost(postId: number) {
   return client.query({
+    variables: {
+      idType: 'Int',
+      id: postId,
+    },
     query: gql`
-      query getPost($id: ID = "") {
-        post(id: $id) {
+      query getPost($id: ID!) {
+        post(id: $id, idType: DATABASE_ID) {
           postId
           slug
+          title
+          content
           date
           modified
           featuredImage {
@@ -80,7 +96,6 @@ export function getPost() {
               uri
             }
           }
-          content
         }
       }
     `,

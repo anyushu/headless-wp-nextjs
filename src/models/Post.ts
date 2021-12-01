@@ -16,6 +16,7 @@ export type Posts = {
 
 export type Post = {
   postId: number
+  title: string
   slug: string
   date: string
   modified?: string
