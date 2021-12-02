@@ -6,6 +6,22 @@ const client = new ApolloClient({
 })
 
 /**
+ * get site meta
+ */
+export function getSiteMeta() {
+  return client.query({
+    query: gql`
+      query getSiteMeta {
+        generalSettings {
+          title
+          description
+        }
+      }
+    `,
+  })
+}
+
+/**
  * get categories
  */
 export function getCategories() {

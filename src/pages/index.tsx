@@ -1,10 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { getCategories, getPost, getPosts } from '../lib/wp-api'
+import { getSiteMeta, getCategories, getPost, getPosts } from '../lib/wp-api'
 import type { Categories } from '../models/Category'
 import type { Posts, Post } from '../models/Post'
+import type { GeneralSettings } from '../models/SiteInfo'
 
 export async function getStaticProps() {
+  const siteMeta = await getSiteMeta()
   const categoriesData = await getCategories()
   const postsData = await getPosts()
   const post = await getPost(1)
@@ -12,6 +14,7 @@ export async function getStaticProps() {
 
   return {
     props: {
+      siteMeta: siteMeta.data.generalSettings,
       categories: categoriesData.data.categories,
       posts: postsData.data.posts,
       post: post.data.post,
@@ -20,19 +23,36 @@ export async function getStaticProps() {
   }
 }
 
-const Home: NextPage<{ categories: Categories; posts: Posts; post: Post }> = ({
-  categories,
-  posts,
-  post,
-}) => {
+const Home: NextPage<{
+  siteMeta: GeneralSettings
+  categories: Categories
+  posts: Posts
+  post: Post
+}> = ({ siteMeta, categories, posts, post }) => {
   return (
     <>
       <Head>
-        ˝<title>Next.js Boilerplate</title>
-        <meta name="description" content="Next.js Boilerplate" />
+        <title>{siteMeta.title}</title>
+        <meta name="description" content={siteMeta.description} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <div className="container mx-auto py-12">
+        <h2 className="text-3xl mb-5">SiteInfo</h2>
+        <table className="table-auto border border-collapse">
+          <tbody>
+            <tr>
+              <th className="border p-2 text-left">Title</th>
+              <td className="border p-2">{siteMeta.title}</td>
+            </tr>
+            <tr>
+              <th className="border p-2 text-left">Description</th>
+              <td className="border p-2">{siteMeta.description}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr />
       <div className="container mx-auto py-12">
         <h2 className="text-3xl mb-5">Category</h2>
         <table className="table-auto border border-collapse">
