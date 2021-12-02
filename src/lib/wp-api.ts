@@ -24,11 +24,14 @@ export function getSiteMeta() {
 /**
  * get categories
  */
-export function getCategories() {
+export function getCategories(slug?: string) {
   return client.query({
+    variables: {
+      slug: slug,
+    },
     query: gql`
-      query getCategories {
-        categories {
+      query getCategories($slug: [String] = "") {
+        categories(where: { slug: $slug }) {
           nodes {
             categoryId
             name
@@ -50,8 +53,9 @@ export function getCategory(categoryId: number) {
     },
     query: gql`
       query getCategory($id: ID!) {
-        category(id: $id) {
+        category(id: $id, idType: DATABASE_ID) {
           categoryId
+          databaseId
           name
           slug
         }
@@ -91,21 +95,19 @@ export function getPosts(categoryId?: number) {
 /**
  * get post by DATABASE_ID
  */
-export function getPost(postId: number) {
+export function getPost(slug: string) {
   return client.query({
     variables: {
-      idType: 'Int',
-      id: postId,
+      id: slug,
     },
     query: gql`
-      query getPost($id: ID!) {
-        post(id: $id, idType: DATABASE_ID) {
+      query getPost($id: ID = "") {
+        post(id: $id, idType: SLUG) {
           postId
           slug
+          date
           title
           content
-          date
-          modified
           featuredImage {
             node {
               altText

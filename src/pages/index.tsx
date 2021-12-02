@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { InferGetStaticPropsType, NextPage } from 'next'
 import Head from 'next/head'
 import { getSiteMeta, getCategories, getPost, getPosts } from '../lib/wp-api'
 import type { Categories } from '../models/Category'
@@ -8,27 +8,23 @@ import type { GeneralSettings } from '../models/SiteInfo'
 export async function getStaticProps() {
   const siteMeta = await getSiteMeta()
   const categoriesData = await getCategories()
-  const postsData = await getPosts()
-  const post = await getPost(1)
-  const revalidate = 60
+  const postsData = await getPosts(1)
+  const post = await getPost('hello-world')
 
   return {
     props: {
-      siteMeta: siteMeta.data.generalSettings,
-      categories: categoriesData.data.categories,
-      posts: postsData.data.posts,
-      post: post.data.post,
+      siteMeta: siteMeta.data.generalSettings as GeneralSettings,
+      categories: categoriesData.data.categories as Categories,
+      posts: postsData.data.posts as Posts,
+      post: post.data.post as Post,
     },
-    revalidate: revalidate,
+    revalidate: 60,
   }
 }
 
-const Home: NextPage<{
-  siteMeta: GeneralSettings
-  categories: Categories
-  posts: Posts
-  post: Post
-}> = ({ siteMeta, categories, posts, post }) => {
+type Props = InferGetStaticPropsType<typeof getStaticProps>
+
+const Home: NextPage<Props> = ({ siteMeta, categories, posts, post }) => {
   return (
     <>
       <Head>
