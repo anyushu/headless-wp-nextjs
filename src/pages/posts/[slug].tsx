@@ -32,7 +32,7 @@ const PostPage: NextPage<Props> = ({ post }) => {
   return (
     <>
       <Head>
-        <title>{post.title}</title>
+        <title>Title: {post.title}</title>
       </Head>
 
       <div className="container mx-auto py-12">

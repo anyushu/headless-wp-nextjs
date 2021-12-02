@@ -46,14 +46,14 @@ export function getCategories(slug?: string) {
 /**
  * get category by categoryId
  */
-export function getCategory(categoryId: number) {
+export function getCategory(slug: string) {
   return client.query({
     variables: {
-      categoryId: categoryId,
+      id: slug,
     },
     query: gql`
       query getCategory($id: ID!) {
-        category(id: $id, idType: DATABASE_ID) {
+        category(id: $id, idType: SLUG) {
           categoryId
           databaseId
           name

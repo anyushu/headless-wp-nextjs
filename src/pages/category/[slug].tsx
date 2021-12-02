@@ -1,6 +1,7 @@
 import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
-import { getCategories, getPosts } from '../../lib/wp-api'
+import { getCategories, getCategory, getPosts } from '../../lib/wp-api'
 import { Category, Categories } from '../../models/Category'
 import { Posts } from '../../models/Post'
 
@@ -17,14 +18,14 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext<{ slug: string }>) {
-  const { data } = await getCategories(context.params?.slug)
-  const category = data.categories.nodes[0] as Category
+  const { data } = await getCategory(context.params?.slug as string)
+  const category = data.category as Category
   const posts = await getPosts(category.categoryId)
 
   return {
     props: {
+      category: category,
       posts: posts.data.posts as Posts,
-      categoryId: category.categoryId,
     },
     revalidate: 60,
   }
@@ -32,16 +33,19 @@ export async function getStaticProps(context: GetStaticPropsContext<{ slug: stri
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
-const CategoryPage: NextPage<Props> = ({ posts, categoryId }) => {
+const CategoryPage: NextPage<Props> = ({ posts, category }) => {
   return (
     <>
+      <Head>
+        <title>Category: {category.name}</title>
+      </Head>
       <div className="container mx-auto py-12">
         <h2 className="text-3xl mb-5">Category</h2>
         <table className="table-auto border border-collapse">
           <tbody>
             <tr>
               <th className="border p-2">ID</th>
-              <td className="border p-2">{categoryId}</td>
+              <td className="border p-2">{category.categoryId}</td>
             </tr>
           </tbody>
         </table>
