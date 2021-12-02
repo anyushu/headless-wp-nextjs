@@ -18,6 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Installed Packages
 
 - [Next.js](https://nextjs.org/)
+- [Apollo Client](https://www.apollographql.com/docs/react/)
 - [Typescript](https://www.typescriptlang.org/)
 - [ESLint](https://eslint.org/)
 - [husky](https://typicode.github.io/husky/#/)
