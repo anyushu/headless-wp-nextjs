@@ -7,7 +7,12 @@ export type Posts = {
       featuredImage?: {
         node: {
           altText: string
-          uri: string
+          sourceUrl: string
+          srcSet: string
+          mediaDetails: {
+            height: number
+            width: number
+          }
         }
       }
     },
@@ -23,7 +28,12 @@ export type Post = {
   featuredImage?: {
     node: {
       altText: string
-      uri: string
+      sourceUrl: string
+      srcSet: string
+      mediaDetails: {
+        height: number
+        width: number
+      }
     }
   }
   content?: string

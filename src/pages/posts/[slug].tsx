@@ -1,5 +1,7 @@
+import DOMParserReact from 'dom-parser-react'
 import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import { getPosts, getPost } from '../../lib/wp-api'
 import { Post, Posts } from '../../models/Post'
 
@@ -54,6 +56,23 @@ const PostPage: NextPage<Props> = ({ post }) => {
             </tr>
           </tbody>
         </table>
+      </div>
+      {post.featuredImage && (
+        <>
+          <hr />
+          <div className="container mx-auto py-12">
+            <Image
+              src={post.featuredImage.node.sourceUrl}
+              alt={post.featuredImage.node.altText}
+              width={post.featuredImage.node.mediaDetails.width}
+              height={post.featuredImage.node.mediaDetails.height}
+            />
+          </div>
+        </>
+      )}
+      <hr />
+      <div className="container mx-auto py-12">
+        <DOMParserReact source={post.content || ''} />
       </div>
     </>
   )

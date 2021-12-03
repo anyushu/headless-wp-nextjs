@@ -30,7 +30,7 @@ export function getCategories(slug?: string) {
       slug: slug,
     },
     query: gql`
-      query getCategories($slug: [String] = "") {
+      query getCategories($slug: [String] = null) {
         categories(where: { slug: $slug }) {
           nodes {
             categoryId
@@ -82,7 +82,12 @@ export function getPosts(categoryId?: number) {
             featuredImage {
               node {
                 altText
-                uri
+                sourceUrl
+                srcSet
+                mediaDetails {
+                  height
+                  width
+                }
               }
             }
           }
@@ -111,7 +116,12 @@ export function getPost(slug: string) {
           featuredImage {
             node {
               altText
-              uri
+              sourceUrl
+              srcSet
+              mediaDetails {
+                height
+                width
+              }
             }
           }
         }

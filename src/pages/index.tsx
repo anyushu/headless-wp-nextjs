@@ -1,5 +1,6 @@
 import type { InferGetStaticPropsType, NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import { getSiteMeta, getCategories, getPost, getPosts } from '../lib/wp-api'
 import type { Categories } from '../models/Category'
 import type { Posts, Post } from '../models/Post'
@@ -8,7 +9,7 @@ import type { GeneralSettings } from '../models/SiteInfo'
 export async function getStaticProps() {
   const siteMeta = await getSiteMeta()
   const categoriesData = await getCategories()
-  const postsData = await getPosts(1)
+  const postsData = await getPosts()
   const post = await getPost('hello-world')
 
   return {
@@ -64,7 +65,11 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts, post }) => {
                 <tr key={category.slug}>
                   <td className="border p-2">{category.categoryId}</td>
                   <td className="border p-2">{category.name}</td>
-                  <td className="border p-2">{category.slug}</td>
+                  <td className="border p-2">
+                    <Link href="/category/[slug]" as={`/category/${category.slug}`}>
+                      {category.slug}
+                    </Link>
+                  </td>
                 </tr>
               )
             })}
@@ -88,7 +93,11 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts, post }) => {
                 <tr key={post.slug}>
                   <td className="border p-2">{post.postId}</td>
                   <td className="border p-2">{post.title}</td>
-                  <td className="border p-2">{post.slug}</td>
+                  <td className="border p-2">
+                    <Link href="/posts/[slug]" as={`/posts/${post.slug}`}>
+                      {post.slug}
+                    </Link>
+                  </td>
                 </tr>
               )
             })}
