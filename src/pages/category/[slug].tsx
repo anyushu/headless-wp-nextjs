@@ -14,7 +14,7 @@ export async function getStaticPaths() {
     },
   }))
 
-  return { paths, fallback: 'blocking' }
+  return { paths, fallback: false }
 }
 
 export async function getStaticProps(context: GetStaticPropsContext<{ slug: string }>) {
@@ -27,7 +27,6 @@ export async function getStaticProps(context: GetStaticPropsContext<{ slug: stri
       category: category,
       posts: posts.data.posts as Posts,
     },
-    revalidate: 60,
   }
 }
 

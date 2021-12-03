@@ -18,7 +18,6 @@ export async function getStaticProps() {
       posts: postsData.data.posts as Posts,
       post: post.data.post as Post,
     },
-    revalidate: 60,
   }
 }
 
