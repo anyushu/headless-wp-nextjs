@@ -1,10 +1,10 @@
 import type { InferGetStaticPropsType, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import { getSiteMeta, getCategories, getPost, getPosts } from '../lib/wp-api'
-import type { Categories } from '../models/Category'
-import type { Posts, Post } from '../models/Post'
-import type { GeneralSettings } from '../models/SiteInfo'
+import { getSiteMeta, getCategories, getPost, getPosts } from 'lib/wp-api'
+import type { Categories } from 'models/Category'
+import type { Posts, Post } from 'models/Post'
+import type { GeneralSettings } from 'models/SiteInfo'
 
 export async function getStaticProps() {
   const siteMeta = await getSiteMeta()

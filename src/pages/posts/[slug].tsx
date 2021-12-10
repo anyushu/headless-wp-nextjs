@@ -1,9 +1,9 @@
-import DOMParserReact from 'dom-parser-react'
 import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { getPosts, getPost } from '../../lib/wp-api'
-import { Post, Posts } from '../../models/Post'
+import PostContent from 'components/molecules/posts/PostContent'
+import { getPosts, getPost } from 'lib/wp-api'
+import { Post, Posts } from 'models/Post'
 
 export async function getStaticPaths() {
   const { data } = await getPosts()
@@ -72,7 +72,7 @@ const PostPage: NextPage<Props> = ({ post }) => {
       )}
       <hr />
       <div className="container mx-auto py-12">
-        <DOMParserReact source={post.content || ''} />
+        <PostContent htmlText={post.content || ''} />
       </div>
     </>
   )

@@ -1,9 +1,9 @@
 import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import { getCategories, getCategory, getPosts } from '../../lib/wp-api'
-import { Category, Categories } from '../../models/Category'
-import { Posts } from '../../models/Post'
+import { getCategories, getCategory, getPosts } from 'lib/wp-api'
+import { Category, Categories } from 'models/Category'
+import { Posts } from 'models/Post'
 
 export async function getStaticPaths() {
   const { data } = await getCategories()
