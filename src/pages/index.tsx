@@ -2,30 +2,28 @@ import type { InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import Layout from 'components/templates/Layout'
-import { getSiteMeta, getCategories, getPost, getPosts } from 'lib/wp-api'
+import { getSiteMeta, getCategories, getPosts } from 'lib/wp-api'
 import type { Categories } from 'models/Category'
-import type { Posts, Post } from 'models/Post'
+import type { Posts } from 'models/Post'
 import type { GeneralSettings } from 'models/SiteInfo'
 
 export async function getStaticProps() {
   const siteMeta = await getSiteMeta()
   const categoriesData = await getCategories()
   const postsData = await getPosts()
-  const post = await getPost('hello-world')
 
   return {
     props: {
       siteMeta: siteMeta.data.generalSettings as GeneralSettings,
       categories: categoriesData.data.categories as Categories,
       posts: postsData.data.posts as Posts,
-      post: post.data.post as Post,
     },
   }
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
-const Home: NextPage<Props> = ({ siteMeta, categories, posts, post }) => {
+const Home: NextPage<Props> = ({ siteMeta, categories, posts }) => {
   return (
     <>
       <NextSeo title={siteMeta.title} description={siteMeta.description} />
@@ -99,28 +97,6 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts, post }) => {
                   </tr>
                 )
               })}
-            </tbody>
-          </table>
-        </div>
-        <hr />
-        <div className="container mx-auto py-12">
-          <h2 className="text-3xl mb-5">Post</h2>
-          <table className="table-auto border border-collapse">
-            <thead>
-              <tr>
-                <th className="border p-2">ID</th>
-                <th className="border p-2">Title</th>
-                <th className="border p-2">Slug</th>
-                <th className="border p-2">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border p-2">{post.postId}</td>
-                <td className="border p-2">{post.title}</td>
-                <td className="border p-2">{post.slug}</td>
-                <td className="border p-2">{post.date}</td>
-              </tr>
             </tbody>
           </table>
         </div>
