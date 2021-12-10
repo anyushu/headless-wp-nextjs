@@ -1,6 +1,7 @@
 import type { InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
+import Layout from 'components/templates/Layout'
 import { getSiteMeta, getCategories, getPost, getPosts } from 'lib/wp-api'
 import type { Categories } from 'models/Category'
 import type { Posts, Post } from 'models/Post'
@@ -29,99 +30,101 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts, post }) => {
     <>
       <NextSeo title={siteMeta.title} description={siteMeta.description} />
 
-      <div className="container mx-auto py-12">
-        <h2 className="text-3xl mb-5">SiteInfo</h2>
-        <table className="table-auto border border-collapse">
-          <tbody>
-            <tr>
-              <th className="border p-2 text-left">Title</th>
-              <td className="border p-2">{siteMeta.title}</td>
-            </tr>
-            <tr>
-              <th className="border p-2 text-left">Description</th>
-              <td className="border p-2">{siteMeta.description}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <hr />
-      <div className="container mx-auto py-12">
-        <h2 className="text-3xl mb-5">Category</h2>
-        <table className="table-auto border border-collapse">
-          <thead>
-            <tr>
-              <th className="border p-2">ID</th>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Slug</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.nodes.map((category) => {
-              return (
-                <tr key={category.slug}>
-                  <td className="border p-2">{category.categoryId}</td>
-                  <td className="border p-2">{category.name}</td>
-                  <td className="border p-2">
-                    <Link href="/category/[slug]" as={`/category/${category.slug}`}>
-                      {category.slug}
-                    </Link>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-      <hr />
-      <div className="container mx-auto py-12">
-        <h2 className="text-3xl mb-5">Posts</h2>
-        <table className="table-auto border border-collapse">
-          <thead>
-            <tr>
-              <th className="border p-2">ID</th>
-              <th className="border p-2">Title</th>
-              <th className="border p-2">Slug</th>
-            </tr>
-          </thead>
-          <tbody>
-            {posts.nodes.map((post) => {
-              return (
-                <tr key={post.slug}>
-                  <td className="border p-2">{post.postId}</td>
-                  <td className="border p-2">{post.title}</td>
-                  <td className="border p-2">
-                    <Link href="/posts/[slug]" as={`/posts/${post.slug}`}>
-                      {post.slug}
-                    </Link>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-      <hr />
-      <div className="container mx-auto py-12">
-        <h2 className="text-3xl mb-5">Post</h2>
-        <table className="table-auto border border-collapse">
-          <thead>
-            <tr>
-              <th className="border p-2">ID</th>
-              <th className="border p-2">Title</th>
-              <th className="border p-2">Slug</th>
-              <th className="border p-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="border p-2">{post.postId}</td>
-              <td className="border p-2">{post.title}</td>
-              <td className="border p-2">{post.slug}</td>
-              <td className="border p-2">{post.date}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <Layout>
+        <div className="container mx-auto py-12">
+          <h2 className="text-3xl mb-5">SiteInfo</h2>
+          <table className="table-auto border border-collapse">
+            <tbody>
+              <tr>
+                <th className="border p-2 text-left">Title</th>
+                <td className="border p-2">{siteMeta.title}</td>
+              </tr>
+              <tr>
+                <th className="border p-2 text-left">Description</th>
+                <td className="border p-2">{siteMeta.description}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div className="container mx-auto py-12">
+          <h2 className="text-3xl mb-5">Category</h2>
+          <table className="table-auto border border-collapse">
+            <thead>
+              <tr>
+                <th className="border p-2">ID</th>
+                <th className="border p-2">Name</th>
+                <th className="border p-2">Slug</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categories.nodes.map((category) => {
+                return (
+                  <tr key={category.slug}>
+                    <td className="border p-2">{category.categoryId}</td>
+                    <td className="border p-2">{category.name}</td>
+                    <td className="border p-2">
+                      <Link href="/category/[slug]" as={`/category/${category.slug}`}>
+                        {category.slug}
+                      </Link>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div className="container mx-auto py-12">
+          <h2 className="text-3xl mb-5">Posts</h2>
+          <table className="table-auto border border-collapse">
+            <thead>
+              <tr>
+                <th className="border p-2">ID</th>
+                <th className="border p-2">Title</th>
+                <th className="border p-2">Slug</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posts.nodes.map((post) => {
+                return (
+                  <tr key={post.slug}>
+                    <td className="border p-2">{post.postId}</td>
+                    <td className="border p-2">{post.title}</td>
+                    <td className="border p-2">
+                      <Link href="/posts/[slug]" as={`/posts/${post.slug}`}>
+                        {post.slug}
+                      </Link>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div className="container mx-auto py-12">
+          <h2 className="text-3xl mb-5">Post</h2>
+          <table className="table-auto border border-collapse">
+            <thead>
+              <tr>
+                <th className="border p-2">ID</th>
+                <th className="border p-2">Title</th>
+                <th className="border p-2">Slug</th>
+                <th className="border p-2">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border p-2">{post.postId}</td>
+                <td className="border p-2">{post.title}</td>
+                <td className="border p-2">{post.slug}</td>
+                <td className="border p-2">{post.date}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Layout>
     </>
   )
 }
