@@ -26,6 +26,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [PostCSS](https://postcss.org/)
 - [Prettier](https://prettier.io/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Next SEO](https://github.com/garmeeh/next-seo#readme)
+- [Next SiteMap](https://github.com/iamvishnusankar/next-sitemap)
 
 ## Project Structure
 
@@ -35,13 +37,17 @@ app
 ├─ .vscode
 ├─ public
 ├─ src
-│ ├─ components
-│ ├─ context
-│ ├─ lib
-│ ├─ models
-│ ├─ pages
-│ ├─ styles
-│ └─ util
+│  ├─ components
+│  │  ├─ atoms
+│  │  ├─ molecules
+│  │  ├─ organisms
+│  │  └─ templates
+│  ├─ context
+│  ├─ lib
+│  ├─ models
+│  ├─ pages
+│  ├─ styles
+│  └─ util
 ├─ .babelrc
 ├─ .env.example
 ├─ .eslintrc.json
