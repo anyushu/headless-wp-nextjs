@@ -1,5 +1,5 @@
 import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { getCategories, getCategory, getPosts } from 'lib/wp-api'
 import { Category, Categories } from 'models/Category'
@@ -35,9 +35,8 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>
 const CategoryPage: NextPage<Props> = ({ posts, category }) => {
   return (
     <>
-      <Head>
-        <title>Category: {category.name}</title>
-      </Head>
+      <NextSeo title={category.name} />
+
       <div className="container mx-auto py-12">
         <h2 className="text-3xl mb-5">Category</h2>
         <table className="table-auto border border-collapse">

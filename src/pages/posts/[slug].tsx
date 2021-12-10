@@ -1,5 +1,5 @@
 import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import PostContent from 'components/molecules/posts/PostContent'
 import { getPosts, getPost } from 'lib/wp-api'
@@ -32,9 +32,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>
 const PostPage: NextPage<Props> = ({ post }) => {
   return (
     <>
-      <Head>
-        <title>Title: {post.title}</title>
-      </Head>
+      <NextSeo title={post.title} />
 
       <div className="container mx-auto py-12">
         <h2 className="text-3xl mb-5">Post</h2>

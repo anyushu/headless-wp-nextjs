@@ -1,5 +1,5 @@
 import type { InferGetStaticPropsType, NextPage } from 'next'
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { getSiteMeta, getCategories, getPost, getPosts } from 'lib/wp-api'
 import type { Categories } from 'models/Category'
@@ -27,11 +27,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>
 const Home: NextPage<Props> = ({ siteMeta, categories, posts, post }) => {
   return (
     <>
-      <Head>
-        <title>{siteMeta.title}</title>
-        <meta name="description" content={siteMeta.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title={siteMeta.title} description={siteMeta.description} />
 
       <div className="container mx-auto py-12">
         <h2 className="text-3xl mb-5">SiteInfo</h2>
