@@ -1,4 +1,5 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
+import { RootQuery } from 'types/graphql'
 
 const client = new ApolloClient({
   uri: process.env.WORDPRESS_API_URL || '',
@@ -9,7 +10,7 @@ const client = new ApolloClient({
  * get site meta
  */
 export function getSiteMeta() {
-  return client.query({
+  return client.query<RootQuery>({
     query: gql`
       query getSiteMeta {
         generalSettings {
@@ -25,7 +26,7 @@ export function getSiteMeta() {
  * get categories
  */
 export function getCategories(slug?: string) {
-  return client.query({
+  return client.query<RootQuery>({
     variables: {
       slug: slug,
     },
@@ -47,7 +48,7 @@ export function getCategories(slug?: string) {
  * get category by categoryId
  */
 export function getCategory(slug: string) {
-  return client.query({
+  return client.query<RootQuery>({
     variables: {
       id: slug,
     },
@@ -68,7 +69,7 @@ export function getCategory(slug: string) {
  * get posts by category
  */
 export function getPosts(categoryId?: number) {
-  return client.query({
+  return client.query<RootQuery>({
     variables: {
       categoryId: categoryId,
     },
@@ -101,7 +102,7 @@ export function getPosts(categoryId?: number) {
  * get post by DATABASE_ID
  */
 export function getPost(slug: string) {
-  return client.query({
+  return client.query<RootQuery>({
     variables: {
       id: slug,
     },

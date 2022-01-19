@@ -2,31 +2,14 @@ import type { InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import Layout from 'components/templates/Layout'
-import { getSiteMeta, getCategories, getPosts } from 'lib/wp-api'
-import type { Categories } from 'models/Category'
-import type { Posts } from 'models/Post'
-import type { GeneralSettings } from 'models/SiteInfo'
-
-export async function getStaticProps() {
-  const siteMeta = await getSiteMeta()
-  const categoriesData = await getCategories()
-  const postsData = await getPosts()
-
-  return {
-    props: {
-      siteMeta: siteMeta.data.generalSettings as GeneralSettings,
-      categories: categoriesData.data.categories as Categories,
-      posts: postsData.data.posts as Posts,
-    },
-  }
-}
+import { getSiteMeta, getCategories, getPosts } from 'libs/graphql/wp-query'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 const Home: NextPage<Props> = ({ siteMeta, categories, posts }) => {
   return (
     <>
-      <NextSeo title={siteMeta.title} description={siteMeta.description} />
+      <NextSeo title={siteMeta?.title || ''} description={siteMeta?.description || ''} />
 
       <Layout>
         <div className="container mx-auto py-12">
@@ -35,11 +18,11 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts }) => {
             <tbody>
               <tr>
                 <th className="border p-2 text-left">Title</th>
-                <td className="border p-2">{siteMeta.title}</td>
+                <td className="border p-2">{siteMeta?.title}</td>
               </tr>
               <tr>
                 <th className="border p-2 text-left">Description</th>
-                <td className="border p-2">{siteMeta.description}</td>
+                <td className="border p-2">{siteMeta?.description}</td>
               </tr>
             </tbody>
           </table>
@@ -56,14 +39,14 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts }) => {
               </tr>
             </thead>
             <tbody>
-              {categories.nodes.map((category) => {
+              {categories?.nodes?.map((category) => {
                 return (
-                  <tr key={category.slug}>
-                    <td className="border p-2">{category.categoryId}</td>
-                    <td className="border p-2">{category.name}</td>
+                  <tr key={category?.slug}>
+                    <td className="border p-2">{category?.categoryId}</td>
+                    <td className="border p-2">{category?.name}</td>
                     <td className="border p-2">
-                      <Link href="/category/[slug]" as={`/category/${category.slug}`}>
-                        {category.slug}
+                      <Link href="/category/[slug]" as={`/category/${category?.slug}`}>
+                        {category?.slug}
                       </Link>
                     </td>
                   </tr>
@@ -84,14 +67,14 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts }) => {
               </tr>
             </thead>
             <tbody>
-              {posts.nodes.map((post) => {
+              {posts?.nodes?.map((post) => {
                 return (
-                  <tr key={post.slug}>
-                    <td className="border p-2">{post.postId}</td>
-                    <td className="border p-2">{post.title}</td>
+                  <tr key={post?.slug}>
+                    <td className="border p-2">{post?.postId}</td>
+                    <td className="border p-2">{post?.title}</td>
                     <td className="border p-2">
-                      <Link href="/posts/[slug]" as={`/posts/${post.slug}`}>
-                        {post.slug}
+                      <Link href="/posts/[slug]" as={`/posts/${post?.slug}`}>
+                        {post?.slug}
                       </Link>
                     </td>
                   </tr>
@@ -106,3 +89,17 @@ const Home: NextPage<Props> = ({ siteMeta, categories, posts }) => {
 }
 
 export default Home
+
+export const getStaticProps = async () => {
+  const siteMeta = await getSiteMeta()
+  const categoriesData = await getCategories()
+  const postsData = await getPosts()
+
+  return {
+    props: {
+      siteMeta: siteMeta.data.generalSettings,
+      categories: categoriesData.data.categories,
+      posts: postsData.data.posts,
+    },
+  }
+}

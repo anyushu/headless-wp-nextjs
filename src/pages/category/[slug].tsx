@@ -2,41 +2,14 @@ import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'n
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import Layout from 'components/templates/Layout'
-import { getCategories, getCategory, getPosts } from 'lib/wp-api'
-import { Category, Categories } from 'models/Category'
-import { Posts } from 'models/Post'
-
-export async function getStaticPaths() {
-  const { data } = await getCategories()
-  const categories: Categories = data.categories
-  const paths = categories.nodes.map((category: Category) => ({
-    params: {
-      slug: category.slug,
-    },
-  }))
-
-  return { paths, fallback: false }
-}
-
-export async function getStaticProps(context: GetStaticPropsContext<{ slug: string }>) {
-  const { data } = await getCategory(context.params?.slug as string)
-  const category = data.category as Category
-  const posts = await getPosts(category.categoryId)
-
-  return {
-    props: {
-      category: category,
-      posts: posts.data.posts as Posts,
-    },
-  }
-}
+import { getCategories, getCategory, getPosts } from 'libs/graphql/wp-query'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 const CategoryPage: NextPage<Props> = ({ posts, category }) => {
   return (
     <>
-      <NextSeo title={category.name} />
+      <NextSeo title={category?.name || ''} />
 
       <Layout>
         <div className="container mx-auto py-12">
@@ -45,7 +18,7 @@ const CategoryPage: NextPage<Props> = ({ posts, category }) => {
             <tbody>
               <tr>
                 <th className="border p-2">ID</th>
-                <td className="border p-2">{category.categoryId}</td>
+                <td className="border p-2">{category?.categoryId}</td>
               </tr>
             </tbody>
           </table>
@@ -62,14 +35,14 @@ const CategoryPage: NextPage<Props> = ({ posts, category }) => {
               </tr>
             </thead>
             <tbody>
-              {posts.nodes.map((post) => {
+              {posts?.nodes?.map((post) => {
                 return (
-                  <tr key={post.slug}>
-                    <td className="border p-2">{post.postId}</td>
-                    <td className="border p-2">{post.title}</td>
+                  <tr key={post?.slug}>
+                    <td className="border p-2">{post?.postId}</td>
+                    <td className="border p-2">{post?.title}</td>
                     <td className="border p-2">
-                      <Link href="/posts/[slug]" as={`/posts/${post.slug}`}>
-                        {post.slug}
+                      <Link href="/posts/[slug]" as={`/posts/${post?.slug}`}>
+                        {post?.slug}
                       </Link>
                     </td>
                   </tr>
@@ -84,3 +57,28 @@ const CategoryPage: NextPage<Props> = ({ posts, category }) => {
 }
 
 export default CategoryPage
+
+export const getStaticPaths = async () => {
+  const { data } = await getCategories()
+  const categories = data.categories
+  const paths = categories?.nodes?.map((category) => ({
+    params: {
+      slug: category?.slug,
+    },
+  }))
+
+  return { paths, fallback: false }
+}
+
+export const getStaticProps = async (context: GetStaticPropsContext<{ slug: string }>) => {
+  const { data } = await getCategory(context.params?.slug as string)
+  const category = data.category
+  const posts = await getPosts(category?.categoryId as number)
+
+  return {
+    props: {
+      category: category,
+      posts: posts.data.posts,
+    },
+  }
+}

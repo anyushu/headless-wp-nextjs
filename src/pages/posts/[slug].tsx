@@ -3,37 +3,14 @@ import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import PostContent from 'components/molecules/posts/PostContent'
 import Layout from 'components/templates/Layout'
-import { getPosts, getPost } from 'lib/wp-api'
-import { Post, Posts } from 'models/Post'
-
-export async function getStaticPaths() {
-  const { data } = await getPosts()
-  const posts = data.posts as Posts
-  const paths = posts.nodes.map((post) => ({
-    params: {
-      slug: post.slug,
-    },
-  }))
-
-  return { paths, fallback: false }
-}
-
-export async function getStaticProps(context: GetStaticPropsContext<{ slug: string }>) {
-  const { data } = await getPost(context.params?.slug as string)
-
-  return {
-    props: {
-      post: data.post as Post,
-    },
-  }
-}
+import { getPosts, getPost } from 'libs/graphql/wp-query'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 const PostPage: NextPage<Props> = ({ post }) => {
   return (
     <>
-      <NextSeo title={post.title} />
+      <NextSeo title={post?.title || ''} />
 
       <Layout>
         <div className="container mx-auto py-12">
@@ -49,30 +26,30 @@ const PostPage: NextPage<Props> = ({ post }) => {
             </thead>
             <tbody>
               <tr>
-                <td className="border p-2">{post.postId}</td>
-                <td className="border p-2">{post.title}</td>
-                <td className="border p-2">{post.slug}</td>
-                <td className="border p-2">{post.date}</td>
+                <td className="border p-2">{post?.postId}</td>
+                <td className="border p-2">{post?.title}</td>
+                <td className="border p-2">{post?.slug}</td>
+                <td className="border p-2">{post?.date}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        {post.featuredImage && (
+        {post?.featuredImage && (
           <>
             <hr />
             <div className="container mx-auto py-12">
               <Image
-                src={post.featuredImage.node.sourceUrl}
-                alt={post.featuredImage.node.altText}
-                width={post.featuredImage.node.mediaDetails.width}
-                height={post.featuredImage.node.mediaDetails.height}
+                src={post.featuredImage.node?.sourceUrl || ''}
+                alt={post.featuredImage.node?.altText || ''}
+                width={post.featuredImage.node?.mediaDetails?.width || 0}
+                height={post.featuredImage.node?.mediaDetails?.height || 0}
               />
             </div>
           </>
         )}
         <hr />
         <div className="container mx-auto py-12">
-          <PostContent htmlText={post.content || ''} />
+          <PostContent htmlText={post?.content || ''} />
         </div>
       </Layout>
     </>
@@ -80,3 +57,25 @@ const PostPage: NextPage<Props> = ({ post }) => {
 }
 
 export default PostPage
+
+export const getStaticPaths = async () => {
+  const { data } = await getPosts()
+  const posts = data.posts
+  const paths = posts?.nodes?.map((post) => ({
+    params: {
+      slug: post?.slug,
+    },
+  }))
+
+  return { paths, fallback: false }
+}
+
+export const getStaticProps = async (context: GetStaticPropsContext<{ slug: string }>) => {
+  const { data } = await getPost(context.params?.slug as string)
+
+  return {
+    props: {
+      post: data.post,
+    },
+  }
+}

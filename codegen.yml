@@ -1,0 +1,7 @@
+schema: '${WORDPRESS_API_URL}'
+documents:
+  - 'src/libs/graphql/**/*.ts'
+generates:
+  ./src/types/graphql.ts:
+    plugins:
+      - 'typescript'
