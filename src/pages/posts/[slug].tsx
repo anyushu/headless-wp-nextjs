@@ -49,7 +49,9 @@ const PostPage: NextPage<Props> = ({ post }) => {
         )}
         <hr />
         <div className="container mx-auto py-12">
-          <PostContent htmlText={post?.content || ''} />
+          <article className="prose max-w-none w-full">
+            <PostContent htmlText={post?.content || ''} />
+          </article>
         </div>
       </Layout>
     </>
