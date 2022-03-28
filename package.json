@@ -9,7 +9,8 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css}'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "gql-codegen": "graphql-codegen --require dotenv/config --config codegen.yml dotenv_config_path=.env.local"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
@@ -30,6 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
     "autoprefixer": "^10.4.4",
+    "dotenv": "^16.0.0",
     "eslint": "8.12.0",
     "eslint-config-next": "12.1.1",
     "eslint-config-prettier": "^8.5.0",
