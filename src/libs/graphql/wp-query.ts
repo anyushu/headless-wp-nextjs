@@ -1,5 +1,5 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
-import { RootQuery } from 'types/graphql'
+import { RootQuery } from '@/types/graphql'
 
 const client = new ApolloClient({
   uri: process.env.WORDPRESS_API_URL || '',

@@ -491,6 +491,8 @@ export type CommentRepliesArgs = {
 export type CommentAuthor = Commenter &
   Node & {
     __typename?: 'CommentAuthor'
+    /** Avatar object for user. The avatar object can be retrieved in different sizes by specifying the size argument. */
+    avatar?: Maybe<Avatar>
     /** Identifies the primary key from the database. */
     databaseId: Scalars['Int']
     /** The email for the comment author */
@@ -504,6 +506,13 @@ export type CommentAuthor = Commenter &
     /** The url the comment author. */
     url?: Maybe<Scalars['String']>
   }
+
+/** A Comment Author object */
+export type CommentAuthorAvatarArgs = {
+  forceDefault?: InputMaybe<Scalars['Boolean']>
+  rating?: InputMaybe<AvatarRatingEnum>
+  size?: InputMaybe<Scalars['Int']>
+}
 
 /** Connection between the Comment type and the Comment type */
 export type CommentToCommentConnection = {
@@ -672,6 +681,8 @@ export type CommentToParentCommentConnectionWhereArgs = {
 
 /** The author of a comment */
 export type Commenter = {
+  /** Avatar object for user. The avatar object can be retrieved in different sizes by specifying the size argument. */
+  avatar?: Maybe<Avatar>
   /** Identifies the primary key from the database. */
   databaseId: Scalars['Int']
   /** The email address of the author of a comment. */
@@ -726,6 +737,8 @@ export enum CommentsConnectionOrderbyEnum {
 export type ContentNode = {
   /** Connection between the ContentNode type and the ContentType type */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>
+  /** The name of the Content Type the node belongs to */
+  contentTypeName: Scalars['String']
   /** The ID of the node in the database. */
   databaseId: Scalars['Int']
   /** Post publishing date. */
@@ -1877,6 +1890,8 @@ export type MediaItem = ContentNode &
     comments?: Maybe<MediaItemToCommentConnection>
     /** Connection between the ContentNode type and the ContentType type */
     contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>
+    /** The name of the Content Type the node belongs to */
+    contentTypeName: Scalars['String']
     /** The unique identifier stored in the database */
     databaseId: Scalars['Int']
     /** Post publishing date. */
@@ -2659,6 +2674,8 @@ export type NodeWithExcerptExcerptArgs = {
 export type NodeWithFeaturedImage = {
   /** Connection between the ContentNode type and the ContentType type */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>
+  /** The name of the Content Type the node belongs to */
+  contentTypeName: Scalars['String']
   /** The unique identifier stored in the database */
   databaseId: Scalars['Int']
   /** Post publishing date. */
@@ -2830,6 +2847,8 @@ export type Page = ContentNode &
     content?: Maybe<Scalars['String']>
     /** Connection between the ContentNode type and the ContentType type */
     contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>
+    /** The name of the Content Type the node belongs to */
+    contentTypeName: Scalars['String']
     /** The unique resource identifier path */
     databaseId: Scalars['Int']
     /** Post publishing date. */
@@ -3199,6 +3218,8 @@ export type Post = ContentNode &
     content?: Maybe<Scalars['String']>
     /** Connection between the ContentNode type and the ContentType type */
     contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>
+    /** The name of the Content Type the node belongs to */
+    contentTypeName: Scalars['String']
     /** The unique resource identifier path */
     databaseId: Scalars['Int']
     /** Post publishing date. */
@@ -6754,13 +6775,13 @@ export type UpdateSettingsPayload = {
   allSettings?: Maybe<Settings>
   /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: Maybe<Scalars['String']>
-  /** Update the discussion setting. */
+  /** Update the DiscussionSettings setting. */
   discussionSettings?: Maybe<DiscussionSettings>
-  /** Update the general setting. */
+  /** Update the GeneralSettings setting. */
   generalSettings?: Maybe<GeneralSettings>
-  /** Update the reading setting. */
+  /** Update the ReadingSettings setting. */
   readingSettings?: Maybe<ReadingSettings>
-  /** Update the writing setting. */
+  /** Update the WritingSettings setting. */
   writingSettings?: Maybe<WritingSettings>
 }
 
