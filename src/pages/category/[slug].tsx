@@ -1,8 +1,8 @@
 import type { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
-import Layout from 'components/templates/Layout'
-import { getCategories, getCategory, getPosts } from 'libs/graphql/wp-query'
+import Layout from '@/components/templates/Layout'
+import { getCategories, getCategory, getPosts } from '@/libs/graphql/wp-query'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -12,35 +12,35 @@ const CategoryPage: NextPage<Props> = ({ posts, category }) => {
       <NextSeo title={category?.name || ''} />
 
       <Layout>
-        <div className="container mx-auto py-12">
-          <h2 className="text-3xl mb-5">Category</h2>
-          <table className="table-auto border border-collapse">
+        <div className="container py-12 mx-auto">
+          <h2 className="mb-5 text-3xl">Category</h2>
+          <table className="border border-collapse table-auto">
             <tbody>
               <tr>
-                <th className="border p-2">ID</th>
-                <td className="border p-2">{category?.categoryId}</td>
+                <th className="p-2 border">ID</th>
+                <td className="p-2 border">{category?.categoryId}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <hr />
-        <div className="container mx-auto py-12">
-          <h2 className="text-3xl mb-5">Posts</h2>
-          <table className="table-auto border border-collapse">
+        <div className="container py-12 mx-auto">
+          <h2 className="mb-5 text-3xl">Posts</h2>
+          <table className="border border-collapse table-auto">
             <thead>
               <tr>
-                <th className="border p-2">ID</th>
-                <th className="border p-2">Title</th>
-                <th className="border p-2">Slug</th>
+                <th className="p-2 border">ID</th>
+                <th className="p-2 border">Title</th>
+                <th className="p-2 border">Slug</th>
               </tr>
             </thead>
             <tbody>
               {posts?.nodes?.map((post) => {
                 return (
                   <tr key={post?.slug}>
-                    <td className="border p-2">{post?.postId}</td>
-                    <td className="border p-2">{post?.title}</td>
-                    <td className="border p-2">
+                    <td className="p-2 border">{post?.postId}</td>
+                    <td className="p-2 border">{post?.title}</td>
+                    <td className="p-2 border">
                       <Link href="/posts/[slug]" as={`/posts/${post?.slug}`}>
                         {post?.slug}
                       </Link>
